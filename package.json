@@ -1,7 +1,7 @@
 {
-  "name": "ant-design-pro",
+  "name": "shark-blog-frontend",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
