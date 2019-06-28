@@ -100,6 +100,12 @@ export default {
           component: './Welcome',
         },
         {
+          path: '/test',
+          name: 'test',
+          icon: 'tool',
+          component: './test/index.tsx',
+        },
+        {
           component: './404',
         },
       ],
