@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Modal, Form, Button, Input } from 'antd';
-// import { FormComponentProps } from "antd/lib/form/Form";
 import styles from './index.less';
+import { FormComponentProps } from 'antd/lib/form';
 
-interface ILoginModalProps {
+export interface ILoginModalProps extends FormComponentProps {
+  userId?: string;
+  password?: string;
   [propName: string]: any;
 }
 
@@ -14,31 +16,36 @@ interface ILoginModalState {
 
 class LoginModal extends Component<ILoginModalProps, ILoginModalState> {
   readonly state: ILoginModalState = {
-    visible: true,
+    visible: false,
   };
-  props: ILoginModalProps = {};
 
   constructor(props: ILoginModalProps, state: ILoginModalState) {
     super(props, state);
   }
 
-  handleOk = (e: React.MouseEvent): void => {
+  handleOk = (e?: React.MouseEvent): void => {
     console.log('handleOk', e);
     this.setState({ visible: false });
   };
 
-  handleCancel = (e: React.MouseEvent): void => {
+  handleCancel = (e?: React.MouseEvent): void => {
     console.log('handleCancel', e);
     this.setState({ visible: false });
   };
 
-  handleSubmit = (e: React.MouseEvent): void => {
+  handleSubmit = (e?: React.MouseEvent): void => {
     console.log('handleSubmit', e);
     this.setState({ visible: false });
   };
 
+  handleClick = (e?: React.MouseEvent): void => {
+    console.log('handleSubmit', e);
+    this.setState({ visible: true });
+  };
+
   render() {
-    // const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
+    // console.log(this)
     return (
       <div>
         <Modal
@@ -66,20 +73,14 @@ class LoginModal extends Component<ILoginModalProps, ILoginModalState> {
           <div>
             <Form className={styles.loginForm} layout="vertical">
               <Form.Item label="User Id">
-                <Input />
-                {/* {getFieldDecorator('username', {
-                                    rules: [{ required: true, message: 'The field is required.' }],
-                                })(
-                                    <Input ref={component => this.inputRef = component} />,
-                                )} */}
+                {getFieldDecorator('username', {
+                  rules: [{ required: true, message: 'The field is required.' }],
+                })(<Input />)}
               </Form.Item>
               <Form.Item label="Password">
-                <Input type={'password'} />
-                {/* {getFieldDecorator('password', {
-                                    rules: [{ required: true, message: 'The field is required.' }],
-                                })(
-                                    <Input type={'password'} />,
-                                )} */}
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: 'The field is required.' }],
+                })(<Input type={'password'} />)}
               </Form.Item>
             </Form>
           </div>
@@ -88,4 +89,4 @@ class LoginModal extends Component<ILoginModalProps, ILoginModalState> {
     );
   }
 }
-export default LoginModal;
+export default Form.create<ILoginModalProps>()(LoginModal);

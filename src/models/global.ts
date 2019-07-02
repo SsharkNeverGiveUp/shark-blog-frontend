@@ -11,6 +11,7 @@ export interface NoticeItem extends NoticeIconData {
 }
 
 export interface GlobalModelState {
+  isLogged: boolean;
   collapsed: boolean;
   notices: NoticeItem[];
 }
@@ -31,13 +32,17 @@ export interface GlobalModelType {
   subscriptions: { setup: Subscription };
 }
 
+// Define a entity as GlobalModelState, reduce duplicate code, 20190701
+const globalModelState: GlobalModelState = {
+  isLogged: false,
+  collapsed: false,
+  notices: [],
+};
+
 const GlobalModel: GlobalModelType = {
   namespace: 'global',
 
-  state: {
-    collapsed: false,
-    notices: [],
-  },
+  state: globalModelState,
 
   effects: {
     *fetchNotices(_, { call, put, select }) {
@@ -101,20 +106,20 @@ const GlobalModel: GlobalModelType = {
   },
 
   reducers: {
-    changeLayoutCollapsed(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    changeLayoutCollapsed(state = globalModelState, { payload }): GlobalModelState {
       return {
         ...state,
         collapsed: payload,
       };
     },
-    saveNotices(state, { payload }): GlobalModelState {
+    saveNotices(state = globalModelState, { payload }): GlobalModelState {
       return {
-        collapsed: false,
         ...state,
+        collapsed: false,
         notices: payload,
       };
     },
-    saveClearedNotices(state = { notices: [], collapsed: true }, { payload }): GlobalModelState {
+    saveClearedNotices(state = globalModelState, { payload }): GlobalModelState {
       return {
         collapsed: false,
         ...state,

@@ -55,7 +55,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
       >
         <a
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+          // href="https://pro.ant.design/docs/getting-started"
           rel="noopener noreferrer"
           className={styles.action}
         >

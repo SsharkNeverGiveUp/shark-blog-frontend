@@ -7,9 +7,9 @@ export default (): React.ReactNode => {
     <div>
       {list.map((item, index) => {
         if (index === 0) {
-          return <div>{item.a}</div>;
+          return <div key={index}>{item.a}</div>;
         } else {
-          return <div>{item.b}</div>;
+          return <div key={index}>{item.b}</div>;
         }
       })}
     </div>

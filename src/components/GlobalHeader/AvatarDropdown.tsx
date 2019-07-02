@@ -8,13 +8,32 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import LoginModal from '../LoginModal';
+// import { LoginModal } from '@/components/LoginModal';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   currentUser?: CurrentUser;
   menu?: boolean;
+  isLogged?: boolean;
 }
 
-class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
+interface IAvatarDropdownState {
+  loginModalVisible?: boolean;
+}
+
+class AvatarDropdown extends React.Component<GlobalHeaderRightProps, IAvatarDropdownState> {
+  readonly state: IAvatarDropdownState = {
+    loginModalVisible: false,
+  };
+
+  // Subcomponent's instance
+  private loginModalRef: any | null;
+
+  constructor(props: GlobalHeaderRightProps, state: IAvatarDropdownState) {
+    super(props, state);
+    this.loginModalRef = null;
+  }
+
   onMenuClick = (event: ClickParam) => {
     const { key } = event;
 
@@ -25,14 +44,35 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
           type: 'login/logout',
         });
       }
-
       return;
     }
     router.push(`/account/${key}`);
   };
 
+  onLoginClick = (event?: any): void => {
+    if (this.loginModalRef instanceof Object) {
+      this.loginModalRef.handleClick();
+    }
+
+    // you can use `instanceof` to judge whether this instance belongs to it's superclass
+    // if (this.loginModalRef instanceof LoginModal) {
+    //   console.log(this.loginModalRef);
+    //   this.loginModalRef.handleClick();
+    // }
+  };
+
   render(): React.ReactNode {
-    const { currentUser = {}, menu = {} } = this.props;
+    const { currentUser = {}, menu, isLogged } = this.props;
+
+    if (!isLogged) {
+      return (
+        <span className={`${styles.action} ${styles.account}`}>
+          <a onClick={this.onLoginClick}>Please log-in first</a>
+          <LoginModal wrappedComponentRef={(form: any) => (this.loginModalRef = form)} />
+        </span>
+      );
+    }
+
     if (!menu) {
       return (
         <span className={`${styles.action} ${styles.account}`}>
@@ -71,6 +111,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     );
   }
 }
-export default connect(({ user }: ConnectState) => ({
+export default connect(({ user, global }: ConnectState) => ({
   currentUser: user.currentUser,
+  isLogged: global.isLogged,
 }))(AvatarDropdown);
