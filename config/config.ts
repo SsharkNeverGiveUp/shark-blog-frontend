@@ -94,10 +94,10 @@ export default {
       authority: ['admin', 'user'],
       routes: [
         {
-          path: '/',
+          path: '/welcome',
           name: 'welcome',
           icon: 'smile',
-          component: './Welcome',
+          component: './welcome/index.tsx',
         },
         {
           path: '/test',
@@ -106,12 +106,12 @@ export default {
           component: './test/index.tsx',
         },
         {
-          component: './404',
+          component: './exception/404',
         },
       ],
     },
     {
-      component: './404',
+      component: './exception/404',
     },
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
